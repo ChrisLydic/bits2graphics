@@ -1,0 +1,439 @@
+* {
+	margin: 0;
+	padding: 0;
+    box-sizing: border-box;
+}
+
+body:before, body:after {
+    content: "";
+    position: fixed;
+    background: #000;
+    left: 0;
+    right: 0;
+    height: 3rem;
+}
+body:before {
+    top: 0;
+}
+body:after {
+    bottom: 0;
+}
+
+body {
+	font-size: 1em;
+	font-family: 'Source Code Pro', sans-serif;
+	line-height: 2rem;
+}
+
+p {
+	font-size: 1.5em;
+    margin: 0 0 3rem 0;
+    text-align: justify
+}
+
+p a {
+    color: black;
+}
+
+p a:hover {
+    text-decoration: none;
+}
+
+.linkWrapper a, nav a {
+    color: #000;
+    background-color: #FFF;
+    font-size: 1.5rem;
+    text-decoration: none;
+    padding: 0 0.5rem;
+    margin: 0.5rem 0 0 0.5rem;
+    float: right;
+}
+
+.linkWrapper a:hover, nav a:hover {
+    color: #FFF;
+    background-color: #000;
+}
+
+.linkWrapper a.selected {
+    color: #FFF;
+    background-color: #000;
+}
+
+section {
+    background-color: #000;
+}
+
+.wrapper {
+    padding: 0 3rem;
+    text-align: center;
+    border-left: 3rem solid #000;
+    border-right: 3rem solid #000;
+}
+
+.nestedWrapper {
+    max-width: 1500px;
+    margin: auto;
+    padding: 6rem 0 3rem 0;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3rem;
+    padding: 0 3rem;
+    width: 100%;
+    background-color: #000;
+    z-index: 1;
+}
+
+h1 {
+    background-color: #000;
+    color: #FFF;
+    font-size: 3rem;
+    float: left;
+    padding: 0.5rem 0 0 0;
+}
+
+/* Make the 10 in the logo non-bold */
+h1 span {
+    font-weight: normal;
+}
+
+footer.linkWrapper {
+    padding: 3rem;
+    height: 9rem;
+    /* Override linkWrapper borders */
+    border-left: 0;
+    border-right: 0;
+}
+
+footer.linkWrapper a {
+    color: #FFF;
+    background-color: #000;
+    font-size: 1.5rem;
+    text-decoration: none;
+    padding: 0 0.5rem;
+    margin: 0;
+}
+
+footer.linkWrapper a:hover {
+    color: #000;
+    background-color: #FFF;
+}
+
+footer.linkWrapper a:nth-child(2) {
+    float: right;
+}
+
+.wrapper img {
+    max-width: 100%;
+    border: 8px #000 solid;
+    padding: 4px;
+    background-color: #FFF;
+}
+
+.imgWrapper {
+    /* Get inline-block functionality and ensure that each image is on its own line */
+    display: table;
+    margin: 0 auto 3rem auto;
+}
+
+#genImgWrapper {
+    display: none;
+}
+
+.formWrapper {
+    border: 8px solid #000;
+    margin: 0 0 3rem 0;
+}
+
+.linkWrapper {
+    border: 8px solid #000;
+    border-bottom: 0;
+    background-color: #000;
+    width: 100%;
+    height: 2.5rem;
+}
+
+.linkWrapper a {
+    float: left;
+    margin: 0 0.5rem 0 0;
+}
+
+form {
+    text-align:center;
+    width: auto;
+    padding: 2rem;
+}
+
+#settingsWrapper {
+    display: none;
+    flex-direction: row;
+    
+    margin: 2rem 0;
+}
+
+#updateSettings, #print {
+    display: none;
+}
+
+.settingsGroup {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+
+    /* fix display problem in chrome */
+    display: block;
+}
+
+/* Add space between setting groups when they are side by side */
+.settingsGroup:nth-of-type(2) {
+    margin: 0 0 0 1rem;
+}
+
+@media (max-width: 1300px) {
+    #settingsWrapper {
+        flex-direction: column;
+    }
+    
+    .settingsGroup:nth-of-type(2) {
+        margin: 2rem 0 0 0;
+    }
+}
+
+/* Image settings are not displayed if no image has been uploaded */
+#imageSettings {
+    display: none;
+}
+
+h2 {
+    display: inline-block;
+/*    flex: 1 1 auto; change to flex to de-center */
+}
+
+.settingsColumns {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 0;
+}
+
+.settingsColumns > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 1 0;
+}
+
+input[type=text], input[type=url], select {
+    height: 2.5rem;
+    background-color: #FFF;
+    border: 4px #000 solid;
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+    margin: 0;
+    font-family: 'Source Code Pro', sans-serif;
+}
+
+select {
+    width: 90%;
+}
+
+#font {
+    width: 190%;
+}
+
+/* Allows the font select tag to span two flex columns by making
+   sure the overflow column isn't over the select */
+.settingsGroup:nth-of-type(1) .settingsColumns div:nth-of-type(3) {
+    max-height: 5rem;
+}
+
+input[type=text] {
+    width: 70%;
+}
+
+.colorView {
+    width: 20%;
+    height: 2.5rem;
+    background-color: #FFF;
+    border: 4px #000 solid;
+    border-left: 0;
+}
+
+.colorWrapper > * {
+    float: left;
+}
+
+input[type=url], #asciiData, #binaryData {
+    margin: 0 -5px 0 0;
+    width: 70%;
+}
+
+*:focus {
+    outline: none;
+}
+
+button {
+    height: 2.5rem;
+    background-color: #000;
+    border: 4px #000 solid;
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+    color: #FFF;
+    font-family: 'Source Code Pro', sans-serif;
+}
+
+button:hover {
+    background-color: #FFF;
+    cursor: pointer;
+    color: #000;
+}
+
+
+/* Custom file upload css */
+
+.fileContainer {
+    overflow: hidden;
+    position: relative;
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+    background-color: #000;
+    color: #FFF;
+    border: 4px #000 solid;
+}
+
+.fileContainer:hover {
+    background-color: #FFF;
+    color: #000;
+}
+
+.fileContainer [type=file] {
+    cursor: inherit;
+    display: block;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    cursor: pointer;
+}
+
+#imgFileWrapper {
+    margin: 1rem 0 0 0;
+}
+
+
+/* Range css from danielstern.ca/range.css */
+
+input[type=range] {
+    -webkit-appearance: none;
+    width: 90%;
+    height: 2.5rem;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 3px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    background: #000000;
+    border-radius: 0px;
+    border: 0px solid #010101;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid #000000;
+    height: 15px;
+    width: 10px;
+    border-radius: 0px;
+    background: #000000;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -6px;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #0f0f0f;
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 3px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    background: #000000;
+    border-radius: 0px;
+    border: 0px solid #010101;
+}
+
+input[type=range]::-moz-range-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid #000000;
+    height: 15px;
+    width: 10px;
+    border-radius: 0px;
+    background: #000000;
+    cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 3px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: #000000;
+    border: 0px solid #010101;
+    border-radius: 0px;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: #000000;
+    border: 0px solid #010101;
+    border-radius: 0px;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+input[type=range]::-ms-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid #000000;
+    height: 15px;
+    width: 10px;
+    border-radius: 0px;
+    background: #000000;
+    cursor: pointer;
+    height: 3px;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+    background: #000000;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+    background: #0f0f0f;
+}
+
+
+/* Fotomoto styles */
+
+.fm-segmented-control.fm-three-segments {
+    box-sizing: content-box;
+}
+
+#fotomotowidget * {
+    box-sizing: border-box;
+}

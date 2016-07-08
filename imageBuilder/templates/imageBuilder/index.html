@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+    <link href="favicon.ico" rel="shortcut icon"> 
+	
+	<title>bits2graphics</title>
+	
+	<link rel="stylesheet" href="style.css">
+	<link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700'
+        rel='stylesheet' type='text/css'>
+	
+</head>
+
+<body>
+
+	<nav><h1>BITS<span>10</span>GRAPHICS</h1> <a href="#">About</a> <a href="#">Create</a></nav>
+	
+    <div class="wrapper">
+    <div class="nestedWrapper">
+        
+        <p>
+            Make art prints from the binary data of your files and text.
+            View examples below or create your own now.
+        </p>
+        
+        <div class="linkWrapper">
+            <a id="uploadFile" class="selected" href="javascript:void(0)">File Upload</a>
+<!--            <a id="uploadUrl" href="javascript:void(0)">File URL</a>-->
+            <a id="uploadAscii" href="javascript:void(0)">ASCII Text</a>
+            <a id="uploadBinary" href="javascript:void(0)">Binary</a>
+        </div>
+        
+        <div class="formWrapper">
+            
+            <form>
+                <label class="fileContainer">
+                    Upload File
+                    <input type="file" id="fileInput" />
+                </label>
+                
+                <div style="display:none;">
+                    <input type="url" id="urlData" placeholder="http://"><button
+                            type="button" id="urlInput">Upload</button>
+                </div>
+                
+                <div style="display:none;">
+                    <input type="text" id="asciiData" placeholder="Hello world"><button
+                            type="button" id="asciiInput">Upload</button>
+                </div>
+                
+                <div style="display:none;">
+                    <input type="text" id="binaryData" placeholder="00000010"><button
+                            type="button" id="binaryInput">Upload</button>
+                </div>
+                
+                <div id="settingsWrapper">
+                    <div class="settingsGroup">
+                        
+                        <h2>Canvas Options</h2>
+                        
+                        <div class="settingsColumns">
+                            <div>
+                                <label>Font Size (<span id="fontSizeDisplay">0</span>px)</label>
+                                <input id="charHeight" type="range" max="500" min="10">
+                                
+                                <label>Canvas Size</label>
+                                <select id="canvasSize">
+                                    <option value="small">Small</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="large">Large</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label>Text Color</label>
+                                <div class="colorWrapper">
+                                    <input type="text" id="textColor" placeholder="#FFFFFF">
+                                    <div class="colorView" id="textColorView"></div>
+                                </div>
+                                
+                                <label>Font</label>
+                                <select id="font">
+                                    <option value="source">Source Code Pro</option>
+                                    <option value="www">www</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label>Background Color</label>
+                                <div class="colorWrapper">
+                                    <input type="text" id="backgroundColor" placeholder="#000000">
+                                    <div class="colorView" id="backgroundColorView"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+
+                    <div class="settingsGroup">
+                        
+                        <h2>Image Options</h2>
+                        
+                        <div class="settingsColumns" id="imageSettings">
+                            
+                            <div>
+                                <label>Size (<span id="imgSizeDisplay">100</span>%)</label>
+                                <input id="imgSize" type="range" max="200" min="1">
+                            </div>
+                            
+                            <div>
+                                <label>Opacity (<span id="imgOpacityDisplay">100</span>%)</label>
+                                <input id="imgOpacity" type="range" max="100" min="0">
+                            </div>
+                            
+                            <div>
+                                <label>Position</label>
+                                <select id="imgPosition">
+                                    <option value="foreground">Foreground</option>
+                                    <option value="background">Background</option>
+                                </select>
+                            </div>
+                            
+                        </div>
+                        
+                        <div id="imgFileWrapper">
+                            <label class="fileContainer" id="imgFileCont">
+                                Upload Image File
+                                <input type="file" id="imgFileInput" />
+                            </label>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <button type="button" id="updateSettings">Update Canvas</button>
+
+            </form>
+        </div>
+    
+        <div class="imgWrapper" id="genImgWrapper">
+            <div class="linkWrapper">
+                <a href="#">Buy Print</a>
+                <a id="downloadImg" href="" download>Download</a>
+            </div>
+            <div>
+                <img id="genImg" src="preview.png" alt="mockup">
+            </div>
+        </div>
+        
+        <p>All orders are handled by <a href="https://www.fotomoto.com">fotomoto</a>.</p>
+        
+        <div class="imgWrapper" id="examples">
+            <div><img src="testimgplsignore.png" alt=""></div>
+        </div>
+	
+        <p>All orders are handled by <a href="https://www.fotomoto.com">fotomoto</a>.</p>
+        
+        <div class="imgWrapper">
+            <div><img src="testimgplsignore.png" alt=""></div>
+        </div>
+        
+        <p>View this project on github.</p>
+        
+        <div class="imgWrapper">
+            <div><img src="testimgplsignore.png" alt=""></div>
+        </div>
+        
+        <p style="margin:0;">A</p>
+        
+    </div></div>
+    
+    <footer class="linkWrapper">
+        <a href="https://www.chrislydic.com">chrislydic.com</a>
+        <a href="#">chris@bits2.graphics</a>
+    </footer>
+    
+    <div id="fotomotoScript" style="display: none;">
+    <script type="text/javascript" src="//widget.fotomoto.com/stores/script/137c68470a0bc43d9daabff7b061a083fa07b40c.js"></script><noscript>If Javascript is disabled in your browser, enable it to place orders. Powered by <a href="http://my.fotomoto.com/">Fotomoto</a>.</noscript>
+    </div>
+    
+    <script src="load-image.all.min.js"></script>
+    <script src="render.js"></script>
+
+</body>
+
+</html>
