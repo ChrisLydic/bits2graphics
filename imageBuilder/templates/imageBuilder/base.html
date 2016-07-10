@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+    <link href="favicon.ico" rel="shortcut icon">
+    
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700'
+        rel='stylesheet' type='text/css'>
+	
+    <title>bits2graphics{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+
+	<nav>
+        <h1>BITS<span>10</span>GRAPHICS</h1>
+    
+        <a href="#">About</a>
+        <a href="#">Create</a>
+    </nav>
+	
+    <div class="wrapper">
+    <div class="nestedWrapper">
+        
+        {% block content %}{% endblock %}
+        
+    </div></div>
+    
+    <footer class="linkWrapper">
+        <a href="https://www.chrislydic.com">chrislydic.com</a>
+        <a href="#">chris@bits2.graphics</a>
+    </footer>
+
+    {% block javascript %}{% endblock %}
+
+</body>
+
+</html>

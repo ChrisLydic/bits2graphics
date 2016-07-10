@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="imgWrapper" id="genImgWrapper">
+        <div class="linkWrapper">
+            <a href="#">Buy Print</a>
+            <a id="downloadImg" href="" download>Download</a>
+        </div>
+        <div>
+            <img id="genImg" src="{% static 'img/preview.png' %}" alt="mockup">
+        </div>
+    </div>
+
+    <p>
+        Create your own image now!
+    </p>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript"
+        src="//widget.fotomoto.com/stores/script/137c68470a0bc43d9daabff7b061a083fa07b40c.js">
+    </script>
+    <noscript>If Javascript is disabled in your browser, enable it to place orders.
+        Powered by <a href="http://my.fotomoto.com/">Fotomoto</a>.
+    </noscript>
+{% endblock %}
