@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'imageBuilder/base.html' %}
 {% load staticfiles %}
 
 {% block content %}
@@ -45,13 +45,21 @@
                     <div class="settingsColumns">
                         <div>
                             <label>Font Size (<span id="fontSizeDisplay">0</span>px)</label>
-                            <input id="charHeight" type="range" max="500" min="10">
+                            <input id="charHeight" type="range" max="400" min="10">
                             
-                            <label>Canvas Size</label>
+                            <label title="
+Large images will have higher quality for large prints, but they
+take longer to generate and background images might not fill them.
+                            ">Canvas Size</label>
                             <select id="canvasSize">
-                                <option value="small">Small</option>
-                                <option value="medium">Medium</option>
-                                <option value="large">Large</option>
+                                <option value="1:1S">1:1 Small</option>
+                                <option value="1:1L">1:1 Large</option>
+                                <option value="5:4S">5:4 Small</option>
+                                <option value="5:4L">5:4 Large</option>
+                                <option value="3:2S">3:2 Small</option>
+                                <option value="3:2L">3:2 Large</option>
+                                <option value="2:1S">2:1 Small</option>
+                                <option value="2:1L">2:1 Large</option>
                             </select>
                         </div>
                         
@@ -88,18 +96,18 @@
                     <div class="settingsColumns" id="imageSettings">
                         
                         <div>
-                            <label>Size (<span id="imgSizeDisplay">100</span>%)</label>
-                            <input id="imgSize" type="range" max="200" min="1">
+                            <label>Size (<span id="imageSizeDisplay">100</span>%)</label>
+                            <input id="imageSize" type="range" max="200" min="1">
                         </div>
                         
                         <div>
-                            <label>Opacity (<span id="imgOpacityDisplay">100</span>%)</label>
-                            <input id="imgOpacity" type="range" max="100" min="0">
+                            <label>Opacity (<span id="imageOpacityDisplay">100</span>%)</label>
+                            <input id="imageOpacity" type="range" max="100" min="0">
                         </div>
                         
                         <div>
                             <label>Position</label>
-                            <select id="imgPosition">
+                            <select id="imagePosition">
                                 <option value="foreground">Foreground</option>
                                 <option value="background">Background</option>
                             </select>
@@ -107,10 +115,10 @@
                         
                     </div>
                     
-                    <div id="imgFileWrapper">
-                        <label class="fileContainer" id="imgFileCont">
+                    <div id="imageFileWrapper">
+                        <label class="fileContainer" id="imageFileCont">
                             Upload Image File
-                            <input type="file" id="imgFileInput" />
+                            <input type="file" id="imageFileInput" />
                         </label>
                     </div>
                     
@@ -122,32 +130,48 @@
         </form>
     </div>
 
-    <div class="imgWrapper" id="genImgWrapper">
+    <div class="imageWrapper" id="genImageWrapper">
         <div class="linkWrapper">
-            <a href="#">Buy Print</a>
-            <a id="downloadImg" href="" download>Download</a>
+            
+            <form method="POST" style="padding:0;">
+                {% csrf_token %}
+
+                <input type="submit" value="Buy Print">
+
+                <div style="display:none;">
+                    {{ form.imageData }}
+                </div>
+            </form>
+
         </div>
+
         <div>
-            <img id="genImg" src="{% static 'img/preview.png' %}" alt="mockup">
+            <img id="genImage" src="{% static 'img/preview.png' %}" alt="mockup">
+        </div>
+
+        <div class="terms">By creating or uploading content with this service, you agree to
+            <a href="/terms/">our terms of use</a> and the
+            <a href="https://www.fotomoto.com/help/terms">Fotomoto terms of use</a>
+            that apply to content.
         </div>
     </div>
     
     <p>All orders are handled by <a href="https://www.fotomoto.com">fotomoto</a>.</p>
     
-    <div class="imgWrapper" id="examples">
-        <div><img src="{% static 'img/testimgplsignore.png' %}" alt=""></div>
+    <div class="imageWrapper" id="examples">
+        <div><img src="{% static 'img/testimageplsignore.png' %}" alt=""></div>
     </div>
 
     <p>All orders are handled by <a href="https://www.fotomoto.com">fotomoto</a>.</p>
     
-    <div class="imgWrapper">
-        <div><img src="{% static 'img/testimgplsignore.png' %}" alt=""></div>
+    <div class="imageWrapper">
+        <div><img src="{% static 'img/testimageplsignore.png' %}" alt=""></div>
     </div>
     
     <p>View this project on github.</p>
     
-    <div class="imgWrapper">
-        <div><img src="{% static 'img/testimgplsignore.png' %}" alt=""></div>
+    <div class="imageWrapper">
+        <div><img src="{% static 'img/testimageplsignore.png' %}" alt=""></div>
     </div>
     
     <p style="margin:0;">A</p>

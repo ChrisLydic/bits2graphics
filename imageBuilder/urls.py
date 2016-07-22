@@ -5,6 +5,6 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url( r'^new_image/$', views.createImage, name='createImage' ),
-    url( r'^(\d+)/$', views.viewImage, name='viewImage' ),
+    url( r'^(\w+)/$', views.viewImage, name='viewImage' ),
+    url( r'^(\w+)/report/$', views.reportImage, name='reportImage' ),
 ]

@@ -1,13 +1,22 @@
 * {
 	margin: 0;
 	padding: 0;
+}
+
+/* To avoid breaking fotomoto css, this selects all the
+   html in body that is not for the fotomoto widget */
+nav *, footer *, .wrapper *,
+nav, footer, .wrapper {
     box-sizing: border-box;
+    font-size: 1.5rem;
+	font-family: 'Source Code Pro', sans-serif;
+	line-height: 2rem;
 }
 
 body:before, body:after {
     content: "";
     position: fixed;
-    background: #000;
+    background-color: #000;
     left: 0;
     right: 0;
     height: 3rem;
@@ -20,26 +29,83 @@ body:after {
 }
 
 body {
-	font-size: 1em;
-	font-family: 'Source Code Pro', sans-serif;
-	line-height: 2rem;
+    background-color: #000;
+}
+
+/* Highlight color */
+::selection {
+	background-color: #BBB;
+}
+::-moz-selection {
+    background-color: #BBB;
+}
+
+.nestedWrapper > h1 {
+    font-size: 2rem;
+    text-align: left;
+    padding: 0 0 3rem 0;
+}
+
+.nestedWrapper > h2 {
+    text-align: left;
+    display: block;
+    padding: 0 0 1rem 0;
 }
 
 p {
-	font-size: 1.5em;
     margin: 0 0 3rem 0;
-    text-align: justify
+    text-align: justify;
 }
 
-p a {
+p a, .terms a {
     color: black;
 }
 
-p a:hover {
+p a:hover, .terms a:hover {
     text-decoration: none;
 }
 
-.linkWrapper a, nav a {
+/* Override defaults */
+input[type=submit] {
+    border: none;
+    font-family: 'Source Code Pro', sans-serif;
+    cursor: pointer;
+}
+
+.reportSubmit {
+    margin: 1rem 0 0 0;
+}
+
+/* Report submit should look like button */
+.reportSubmit input[type=submit], a.reportLink {
+    height: 2.5rem;
+    border: 4px solid #000;
+    float: none;
+    color: #FFF;
+    background-color: #000;
+}
+.reportSubmit input[type=submit]:hover {
+    color: #000;
+    background-color: #FFF;
+}
+
+nav h1 a {
+    text-decoration: none;
+    background-color: #000;
+    color: #FFF;
+    font-size: 3rem;
+    float: left;
+    padding: 0.5rem 0 0 0;
+}
+/* Make the 10 in the logo non-bold */
+h1 a span {
+    font-weight: normal;
+    font-size: 3rem;
+}
+
+.linkWrapper a, nav > a, .imageWrapper > a,
+input[type=submit] {
+    height: 2rem;
     color: #000;
     background-color: #FFF;
     font-size: 1.5rem;
@@ -49,7 +115,9 @@ p a:hover {
     float: right;
 }
 
-.linkWrapper a:hover, nav a:hover {
+.linkWrapper a:hover, nav > a:hover,
+.imageWrapper > a:hover,
+input[type=submit]:hover {
     color: #FFF;
     background-color: #000;
 }
@@ -68,6 +136,7 @@ section {
     text-align: center;
     border-left: 3rem solid #000;
     border-right: 3rem solid #000;
+    background-color: #FFF;
 }
 
 .nestedWrapper {
@@ -87,19 +156,6 @@ nav {
     z-index: 1;
 }
 
-h1 {
-    background-color: #000;
-    color: #FFF;
-    font-size: 3rem;
-    float: left;
-    padding: 0.5rem 0 0 0;
-}
-
-/* Make the 10 in the logo non-bold */
-h1 span {
-    font-weight: normal;
-}
-
 footer.linkWrapper {
     padding: 3rem;
     height: 9rem;
@@ -108,7 +164,7 @@ footer.linkWrapper {
     border-right: 0;
 }
 
-footer.linkWrapper a {
+footer.linkWrapper a, a.reportLink {
     color: #FFF;
     background-color: #000;
     font-size: 1.5rem;
@@ -117,7 +173,7 @@ footer.linkWrapper a {
     margin: 0;
 }
 
-footer.linkWrapper a:hover {
+footer.linkWrapper a:hover, a.reportLink:hover {
     color: #000;
     background-color: #FFF;
 }
@@ -127,19 +183,27 @@ footer.linkWrapper a:nth-child(2) {
 }
 
 .wrapper img {
+    width: 100%;
     max-width: 100%;
     border: 8px #000 solid;
     padding: 4px;
     background-color: #FFF;
 }
 
-.imgWrapper {
+.imageWrapper {
     /* Get inline-block functionality and ensure that each image is on its own line */
     display: table;
     margin: 0 auto 3rem auto;
 }
 
-#genImgWrapper {
+.terms, .terms a {
+    text-align: left;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+/* No image has been generated on page load */
+#genImageWrapper {
     display: none;
 }
 
@@ -156,7 +220,7 @@ footer.linkWrapper a:nth-child(2) {
     height: 2.5rem;
 }
 
-.linkWrapper a {
+.linkWrapper a, .imageWrapper > a, input[type=submit] {
     float: left;
     margin: 0 0.5rem 0 0;
 }
@@ -209,7 +273,6 @@ form {
 
 h2 {
     display: inline-block;
-/*    flex: 1 1 auto; change to flex to de-center */
 }
 
 .settingsColumns {
@@ -230,12 +293,13 @@ input[type=text], input[type=url], select {
     background-color: #FFF;
     border: 4px #000 solid;
     font-size: 1.5rem;
+    line-height: 1em;
     padding: 0 0.5rem;
     margin: 0;
     font-family: 'Source Code Pro', sans-serif;
 }
 
-select {
+.settingsGroup select {
     width: 90%;
 }
 
@@ -265,7 +329,7 @@ input[type=text] {
     float: left;
 }
 
-input[type=url], #asciiData, #binaryData {
+input[type=url], #asciiData, #binaryData, #copyData {
     margin: 0 -5px 0 0;
     width: 70%;
 }
@@ -322,7 +386,7 @@ button:hover {
     cursor: pointer;
 }
 
-#imgFileWrapper {
+#imageFileWrapper {
     margin: 1rem 0 0 0;
 }
 

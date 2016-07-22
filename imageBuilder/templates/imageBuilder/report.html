@@ -1,0 +1,15 @@
+{% extends 'imageBuilder/base.html' %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        
+        {{ form.reportType.label_tag }}
+        
+        <div class="reportSubmit">
+            {{ form.reportType }}
+            <input type="submit" value="Report Image">
+        </div>
+        
+    </form>
+{% endblock %}

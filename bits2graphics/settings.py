@@ -130,5 +130,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join( os.path.join( os.path.dirname(BASE_DIR), 'public' ), 'static' )
 STATICFILES_DIRS = [
-    os.path.abspath( 'bits2graphics/static' ),
+    os.path.abspath( 'imageBuilder/static' ),
 ]
+
+# MEDIA_URL = '/media/'
+MEDIA_URL = 'http://localhost:8090/media/'
+MEDIA_ROOT = os.path.join( os.path.join( os.path.dirname(BASE_DIR), 'public' ), 'media' )

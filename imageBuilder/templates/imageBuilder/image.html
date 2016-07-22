@@ -1,19 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'imageBuilder/base.html' %}
 {% load staticfiles %}
 
 {% block content %}
-    <div class="imgWrapper" id="genImgWrapper">
-        <div class="linkWrapper">
-            <a href="#">Buy Print</a>
-            <a id="downloadImg" href="" download>Download</a>
+    <div class="imageWrapper">
+        <div>
+            <img src="{{ image.image.url }}" alt="mockup">
         </div>
         <div>
-            <img id="genImg" src="{% static 'img/preview.png' %}" alt="mockup">
+            <input type="text" id="copyData" value="https://bits2.graphics/image/{{ image.id }}"><button
+                    type="button" id="copyBtn" data-clipboard-target="#copyData">Copy</button>
+            
+            <a class="reportLink" href="/image/{{ image.id }}/report/">Report</a>
         </div>
+        
     </div>
 
-    <p>
-        Create your own image now!
+    <p style="margin:0;">
+        <a href="/">Create your own image now!</a>
     </p>
 {% endblock %}
 
@@ -24,4 +27,10 @@
     <noscript>If Javascript is disabled in your browser, enable it to place orders.
         Powered by <a href="http://my.fotomoto.com/">Fotomoto</a>.
     </noscript>
+
+    <script src="{% static 'js/clipboard.min.js' %}"></script>
+
+    <script>
+        new Clipboard( '#copyBtn' );
+    </script>
 {% endblock %}

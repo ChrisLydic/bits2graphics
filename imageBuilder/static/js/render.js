@@ -35,9 +35,9 @@ var renderImage = {
         textColor: 'white',
         canvasHeight: 1000,
         canvasWidth: 1000,
-        imgSize: 100,
-        imgOpacity: 100,
-        imgPosition: 'background',
+        imageSize: 100,
+        imageOpacity: 100,
+        imagePosition: 'background',
     },
     
     // Setup, draw, and display the image to the users
@@ -48,16 +48,16 @@ var renderImage = {
         this.settings.textColor = settings.textColor || this.settings.textColor;
         this.settings.canvasHeight = settings.canvasHeight || this.settings.canvasHeight;
         this.settings.canvasWidth = settings.canvasWidth || this.settings.canvasWidth;
-        this.settings.imgSize = settings.imgSize || this.settings.imgSize;
-        this.settings.imgOpacity = settings.imgOpacity || this.settings.imgOpacity;
-        this.settings.imgPosition = settings.imgPosition || this.settings.imgPosition;
+        this.settings.imageSize = settings.imageSize || this.settings.imageSize;
+        this.settings.imageOpacity = settings.imageOpacity || this.settings.imageOpacity;
+        this.settings.imagePosition = settings.imagePosition || this.settings.imagePosition;
         
         this.setup();
         this.findProperSizes();
         
-        if ( settings.imgPosition === 'background' ) {
+        if ( settings.imagePosition === 'background' ) {
             if ( settings.imageLoad ) {
-                this.drawImage( gImg );
+                this.drawImage( gImage );
             } else if ( settings.image ) {
                 this.drawImage( settings.image );
             }
@@ -70,9 +70,9 @@ var renderImage = {
             this.drawData( data );
         }
         
-        if ( settings.imgPosition === 'foreground' ) {
+        if ( settings.imagePosition === 'foreground' ) {
             if ( settings.imageLoad ) {
-                this.drawImage( gImg );
+                this.drawImage( gImage );
             } else if ( settings.image ) {
                 this.drawImage( settings.image );
             }
@@ -327,7 +327,7 @@ var renderImage = {
 //    }
     
     drawImage: function ( image ) {
-        var scale = this.canvas.height * ( this.settings.imgSize/100 );
+        var scale = this.canvas.height * ( this.settings.imageSize/100 );
         var scaledImage = loadImage.scale(
             image,
             {maxHeight: scale}
@@ -337,26 +337,26 @@ var renderImage = {
         var y = ( this.canvas.height / 2 ) - ( scaledImage.height / 2 );
         
         this.ctx.save();
-        this.ctx.globalAlpha = ( this.settings.imgOpacity / 100 );
+        this.ctx.globalAlpha = ( this.settings.imageOpacity / 100 );
         this.ctx.drawImage( scaledImage, x, y );
         this.ctx.restore();
     }
 }
 
 // Show image returned by RenderImage.render
-var showImage = function ( img ) {
-    var genImgView = document.getElementById( 'genImgWrapper' );
-    var imgView = document.getElementById( 'genImg' );
-    var downloadLink = document.getElementById( 'downloadImg' );
-    imgView.src = img;
-    downloadLink.href = img;
-    genImgView.style.display = 'table';
+var showImage = function ( image ) {
+    var genImageView = document.getElementById( 'genImageWrapper' );
+    var imageView = document.getElementById( 'genImage' );
+    var imageData = document.getElementById( 'id_imageData' );
+    imageView.src = image;
+    imageData.value = image;
+    genImageView.style.display = 'table';
 }
 
 // Initialize and display settings to user
 var showSettings = function () {
-    document.getElementById( 'charHeight' ).value = '20';
-    document.getElementById( 'fontSizeDisplay' ).innerHTML = '20';
+    document.getElementById( 'charHeight' ).value = '36';
+    document.getElementById( 'fontSizeDisplay' ).innerHTML = '36';
     
     document.getElementById( 'textColor' ).value = '#FFFFFF';
     document.getElementById( 'textColorView' )
@@ -366,11 +366,11 @@ var showSettings = function () {
     document.getElementById( 'backgroundColorView' )
         .style.backgroundColor = '#000000';
     
-    document.getElementById( 'canvasSize' ).value = 'medium';
+    document.getElementById( 'canvasSize' ).value = '1:1S';
     document.getElementById( 'font' ).value = 'source';
     
     // hide image options and show image button because image is reset
-    document.getElementById( 'imgFileWrapper' ).style.display = 'block';
+    document.getElementById( 'imageFileWrapper' ).style.display = 'block';
     document.getElementById( 'imageSettings' ).style.display = 'none';
     
     document.getElementById( 'settingsWrapper' ).style.display = 'flex';
@@ -385,19 +385,19 @@ var hideSettings = function () {
     document.getElementById( 'settingsWrapper' ).style.display = 'none';
     document.getElementById( 'updateSettings' ).style.display = 'none';
     
-    document.getElementById( 'genImg' ).src = 'preview.png';
-    document.getElementById( 'genImgWrapper' ).style.display = 'none';
+    document.getElementById( 'genImage' ).src = '';
+    document.getElementById( 'genImageWrapper' ).style.display = 'none';
 };
 
 // Hiding is done in hideSettings
 var showImageSettings = function () {
-    document.getElementById( 'imgSize' ).value = '100';
-    document.getElementById( 'imgSizeDisplay' ).innerHTML = '100';
+    document.getElementById( 'imageSize' ).value = '100';
+    document.getElementById( 'imageSizeDisplay' ).innerHTML = '100';
     
-    document.getElementById( 'imgOpacity' ).value = '100';
-    document.getElementById( 'imgOpacityDisplay' ).innerHTML = '100';
+    document.getElementById( 'imageOpacity' ).value = '100';
+    document.getElementById( 'imageOpacityDisplay' ).innerHTML = '100';
     
-    document.getElementById( 'imgPosition' ).value = 'background';
+    document.getElementById( 'imagePosition' ).value = 'background';
     
     document.getElementById( 'imageSettings' ).style.display = 'flex';
 };
@@ -407,7 +407,7 @@ var settingsUpdate = function () {
     
     settings.dataLoad = true;
     
-    if ( gImg ) {
+    if ( gImage ) {
         settings.imageLoad = true;
     }
     
@@ -457,32 +457,52 @@ var getSettings = function () {
     
     if ( document.getElementById( 'canvasSize' ) ) {
         switch ( document.getElementById( 'canvasSize' ).value ) {
-            case 'small':
-                settings.canvasHeight = 500;
-                settings.canvasWidth = 500;
+            case '1:1S':
+                settings.canvasHeight = 3600;
+                settings.canvasWidth = 3600;
                 break;
-            case 'medium':
-                settings.canvasHeight = 600;
-                settings.canvasWidth = 1000;
+            case '1:1L':
+                settings.canvasHeight = 7200;
+                settings.canvasWidth = 7200;
                 break;
-            case 'large':
-                settings.canvasHeight = 2000;
-                settings.canvasWidth = 4000;
+            case '5:4S':
+                settings.canvasHeight = 3600;
+                settings.canvasWidth = 4500;
+                break;
+            case '5:4L':
+                settings.canvasHeight = 6000;
+                settings.canvasWidth = 7500;
+                break; 
+            case '3:2S':
+                settings.canvasHeight = 3000;
+                settings.canvasWidth = 4500;
+                break;
+            case '3:2L':
+                settings.canvasHeight = 7200;
+                settings.canvasWidth = 10800;
+                break;
+            case '2:1S':
+                settings.canvasHeight = 3000;
+                settings.canvasWidth = 6000;
+                break;
+            case '2:1L':
+                settings.canvasHeight = 7200;
+                settings.canvasWidth = 14400;
                 break;
         }
     }
     
     // Image settings, only used if the image exists
-    if ( document.getElementById( 'imgSize' ) ) {
-        settings.imgSize = document.getElementById( 'imgSize' ).value
+    if ( document.getElementById( 'imageSize' ) ) {
+        settings.imageSize = document.getElementById( 'imageSize' ).value
     }
     
-    if ( document.getElementById( 'imgOpacity' ) ) {
-        settings.imgOpacity = document.getElementById( 'imgOpacity' ).value
+    if ( document.getElementById( 'imageOpacity' ) ) {
+        settings.imageOpacity = document.getElementById( 'imageOpacity' ).value
     }
     
-    if ( document.getElementById( 'imgPosition' ) ) {
-        settings.imgPosition = document.getElementById( 'imgPosition' ).value
+    if ( document.getElementById( 'imagePosition' ) ) {
+        settings.imagePosition = document.getElementById( 'imagePosition' ).value
     }
     
     return settings;
@@ -562,7 +582,12 @@ var readUrl = function () {
 var readAscii = function () {
     resetRender();
     
-    var textString = document.getElementById( 'asciiData' ).value;
+    // Used to fix problem with String.length caused by astral symbols
+    // https://mathiasbynens.be/notes/javascript-unicode#accounting-for-astral-symbols
+    var regexAstralSymbols = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+    
+    var textString = document.getElementById( 'asciiData' ).value
+            .replace(regexAstralSymbols, '�');
     var uintBits = [];
     
     // Returns an array of character codes for a string of text
@@ -571,7 +596,6 @@ var readAscii = function () {
         
         if ( charCode > 127 ) {
             alert( 'Non-ascii character: ' + textString.charAt(i) );
-            break;
         } else {
             uintBits.push( charCode );
         }
@@ -621,7 +645,7 @@ var readBinary = function () {
 };
 
 // Gets a file as an array of strings that represent bytes
-var readImg = function ( event ) {
+var readImage = function ( event ) {
     //Retrieve the first (and only!) File from the FileList object
     var file = event.target.files[0];
 
@@ -633,13 +657,13 @@ var readImg = function ( event ) {
             
             loadImage(
                 contents,
-                function( img ) {
+                function( image ) {
                     showImageSettings();
                     var settings = getSettings();
                     settings.dataLoad = true;
                     
-                    settings.image = img;
-                    gImg = settings.image;
+                    settings.image = image;
+                    gImage = settings.image;
                     
                     showImage( renderImage.render( '', settings ) );
                 },
@@ -659,15 +683,15 @@ var readImg = function ( event ) {
 
 var resetRender = function () {
     gBits = null;
-    gImg = null;
+    gImage = null;
     
     // Replace the image file upload button with a copy, this is to stop the
     // change event listener from ignoring a file being uploaded twice in a row
-    var imgNode = document.getElementById( 'imgFileInput' ).cloneNode(true);
-    document.getElementById( 'imgFileInput' ).parentNode
-            .removeChild( document.getElementById( 'imgFileInput' ) );
-    document.getElementById( 'imgFileCont' ).appendChild( imgNode );
-    document.getElementById( 'imgFileInput' ).addEventListener( 'change', readImg );
+    var imageNode = document.getElementById( 'imageFileInput' ).cloneNode(true);
+    document.getElementById( 'imageFileInput' ).parentNode
+            .removeChild( document.getElementById( 'imageFileInput' ) );
+    document.getElementById( 'imageFileCont' ).appendChild( imageNode );
+    document.getElementById( 'imageFileInput' ).addEventListener( 'change', readImage );
 };
 
 var showFile = function ( tagName ) {
@@ -733,23 +757,23 @@ backgroundColorText.addEventListener( 'input', function () {
         .style.backgroundColor = backgroundColorText.value;
 }, false );
 
-var imgSizeRange = document.getElementById( 'imgSize' );
-imgSizeRange.addEventListener( 'input', function () {
-    document.getElementById( 'imgSizeDisplay' )
-        .innerHTML = imgSizeRange.value;
+var imageSizeRange = document.getElementById( 'imageSize' );
+imageSizeRange.addEventListener( 'input', function () {
+    document.getElementById( 'imageSizeDisplay' )
+        .innerHTML = imageSizeRange.value;
 }, false );
 
-var imgOpacityRange = document.getElementById( 'imgOpacity' );
-imgOpacityRange.addEventListener( 'input', function () {
-    document.getElementById( 'imgOpacityDisplay' )
-        .innerHTML = imgOpacityRange.value;
+var imageOpacityRange = document.getElementById( 'imageOpacity' );
+imageOpacityRange.addEventListener( 'input', function () {
+    document.getElementById( 'imageOpacityDisplay' )
+        .innerHTML = imageOpacityRange.value;
 }, false );
 
 // Buttons for updating settings and uploading image files
 document.getElementById( 'updateSettings' )
     .addEventListener( 'click', settingsUpdate );
-document.getElementById( 'imgFileInput' )
-    .addEventListener( 'change', readImg );
+document.getElementById( 'imageFileInput' )
+    .addEventListener( 'change', readImage );
 
 // Buttons for submitting data
 document.getElementById( 'fileInput' )

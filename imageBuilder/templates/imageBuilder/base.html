@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-    <link href="favicon.ico" rel="shortcut icon">
+    <link href="{% static 'img/favicon.ico' %}" rel="shortcut icon">
     
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 	<link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700'
@@ -16,10 +16,9 @@
 <body>
 
 	<nav>
-        <h1>BITS<span>10</span>GRAPHICS</h1>
+        <h1><a href="/">BITS<span>10</span>GRAPHICS</a></h1>
     
-        <a href="#">About</a>
-        <a href="#">Create</a>
+        <a href="/">Create</a>
     </nav>
 	
     <div class="wrapper">
@@ -31,7 +30,7 @@
     
     <footer class="linkWrapper">
         <a href="https://www.chrislydic.com">chrislydic.com</a>
-        <a href="#">chris@bits2.graphics</a>
+        <a href='ma&#105;lto&#58;%63hr%&#54;9s&#64;%62i%7&#52;s&#50;%&#50;Eg&#114;a&#37;&#55;0hi&#99;s'>chri&#115;&#64;b&#105;t&#115;&#50;&#46;&#103;ra&#112;hic&#115;</a>
     </footer>
 
     {% block javascript %}{% endblock %}

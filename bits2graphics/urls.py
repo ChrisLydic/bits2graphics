@@ -1,4 +1,5 @@
-"""bits2graphics URL Configuration
+"""
+bits2graphics URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
@@ -19,6 +20,7 @@ from imageBuilder import views
 
 urlpatterns = [
     url( r'^admin/', admin.site.urls ),
-    url( r'^img/', include( 'imageBuilder.urls' ) ),
+    url( r'^image/', include( 'imageBuilder.urls' ) ),
     url( r'^$', views.home ),
+    url( r'^terms/$', views.terms ),
 ]
