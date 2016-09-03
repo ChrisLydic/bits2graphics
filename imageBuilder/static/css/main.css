@@ -200,6 +200,7 @@ footer.linkWrapper a:nth-child(2) {
     text-align: left;
     font-size: 1rem;
     line-height: 1.5rem;
+    padding: 0 0 10px 0;
 }
 
 /* No image has been generated on page load */
@@ -254,6 +255,10 @@ form {
 /* Add space between setting groups when they are side by side */
 .settingsGroup:nth-of-type(2) {
     margin: 0 0 0 1rem;
+}
+
+.settingsGroup h2:nth-of-type(2) {
+    margin: 2rem 0 0 0;
 }
 
 @media (max-width: 1300px) {

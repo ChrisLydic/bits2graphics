@@ -6,22 +6,33 @@ from os.path import abspath
 from django.core.files.base import ContentFile
 from .models import Image
 from .forms import ImageForm, ReportForm
+# for recaptcha
+import requests
 # for decoding data uri to image
 import re
 import base64
-dataUrlPattern = re.compile('data:image/(png);base64,(.*)$')
+dataUrlPattern = re.compile( 'data:image/(png);base64,(.*)$' )
 
 
 def home( request ):
     form = ImageForm( data=request.POST or None )
     
     if form.is_valid():
+        userCaptchaData = request.POST.get('g-recaptcha-response')
+        secretKey = 'xxx'
+        captchaParams = { 'secret': secretKey, 'response': userCaptchaData }
+
+        resp = requests.get( 'https://www.google.com/recaptcha/api/siteverify',
+            params=captchaParams )
+
+        if resp.json()['success'] != 'true':
+            return render(request, 'imageBuilder/index.html', {'form': form})
+
         imageData = request.POST.get( 'imageData' )
-        print(len(imageData))
         imageData = dataUrlPattern.match( imageData ).group(2)
 
-        if imageData != None and len( imageData ) != 0:
-            imageData = base64.urlsafe_b64decode(imageData + '=' * (4 - len(imageData) % 4))
+        if imageData and len( imageData ) != 0:
+            imageData = base64.urlsafe_b64decode( imageData + '=' * ( 4 - len( imageData ) % 4) )
             image = ContentFile( imageData )
 
             imageId = makeId()

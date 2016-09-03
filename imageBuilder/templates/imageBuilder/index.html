@@ -2,11 +2,17 @@
 {% load staticfiles %}
 
 {% block content %}
+    <div class="imageWrapper">
+        <div><img src="{% static 'img/collage1.png' %}" alt="collage"
+            id="collage1"
+        ></div>
+    </div>
+
     <p>
-        Make art prints from the binary data of your files and text.
-        View examples below or create your own now.
+        Create personalized art from the binary representations of your files and text.
+        <noscript>Javascript is required to use the image generator.</noscript>
     </p>
-    
+
     <div class="linkWrapper">
         <a id="uploadFile" class="selected" href="javascript:void(0)">File Upload</a>
 <!--            <a id="uploadUrl" href="javascript:void(0)">File URL</a>-->
@@ -44,13 +50,10 @@
                     
                     <div class="settingsColumns">
                         <div>
-                            <label>Font Size (<span id="fontSizeDisplay">0</span>px)</label>
-                            <input id="charHeight" type="range" max="400" min="10">
-                            
                             <label title="
 Large images will have higher quality for large prints, but they
 take longer to generate and background images might not fill them.
-                            ">Canvas Size</label>
+                            ">Size</label>
                             <select id="canvasSize">
                                 <option value="1:1S">1:1 Small</option>
                                 <option value="1:1L">1:1 Large</option>
@@ -64,24 +67,47 @@ take longer to generate and background images might not fill them.
                         </div>
                         
                         <div>
-                            <label>Text Color</label>
-                            <div class="colorWrapper">
-                                <input type="text" id="textColor" placeholder="#FFFFFF">
-                                <div class="colorView" id="textColorView"></div>
-                            </div>
-                            
-                            <label>Font</label>
-                            <select id="font">
-                                <option value="source">Source Code Pro</option>
-                                <option value="www">www</option>
+                            <label>Orientation</label>
+                            <select id="canvasOrientation">
+                                <option value="landscape">Landscape</option>
+                                <option value="portrait">Portrait</option>
                             </select>
                         </div>
                         
                         <div>
-                            <label>Background Color</label>
+                            <label>Color</label>
                             <div class="colorWrapper">
                                 <input type="text" id="backgroundColor" placeholder="#000000">
                                 <div class="colorView" id="backgroundColorView"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <h2>Text Options</h2>
+
+                    <div class="settingsColumns">
+                        <div>
+                            <label>Size (<span id="fontSizeDisplay">0</span>px)</label>
+                            <input id="charHeight" type="range" max="400" min="10">
+
+                            <!--<label>Font</label>
+                            <select id="font">
+                                <option value="source">Source Code Pro</option>
+                                <option value="www">www</option>
+                            </select>-->
+                        </div>
+                        
+                        <div>
+                            <label>Border (<span id="canvasPadDisplay">0</span>px)</label>
+                            <input id="canvasPad" type="range" max="600" min="0">
+                        </div>
+                        
+                        <div>
+                            <label>Color</label>
+                            <div class="colorWrapper">
+                                <input type="text" id="textColor" placeholder="#FFFFFF">
+                                <div class="colorView" id="textColorView"></div>
                             </div>
                         </div>
 
@@ -131,53 +157,129 @@ take longer to generate and background images might not fill them.
     </div>
 
     <div class="imageWrapper" id="genImageWrapper">
+        <div class="terms">
+            Click 'View Full Image' to buy or download the hd image.
+            By creating or uploading content with this service, you agree to our 
+            <a href="/terms/">terms of use</a>.
+        </div>
+
         <div class="linkWrapper">
             
-            <form method="POST" style="padding:0;">
-                {% csrf_token %}
+            <form style="padding:0;" onsubmit="return false;">
 
-                <input type="submit" value="Buy Print">
+                <input type="submit" id="viewImage" value="View Full Image"
+                    onclick="toggleCaptcha()">
 
-                <div style="display:none;">
-                    {{ form.imageData }}
-                </div>
+                <a style="display:none;" href="" download="bits_image"
+                    id="downloadImage"
+                >Download Image</a>
+
             </form>
 
         </div>
 
         <div>
-            <img id="genImage" src="{% static 'img/preview.png' %}" alt="mockup">
-        </div>
 
-        <div class="terms">By creating or uploading content with this service, you agree to
-            <a href="/terms/">our terms of use</a> and the
-            <a href="https://www.fotomoto.com/help/terms">Fotomoto terms of use</a>
-            that apply to content.
+            <form method="POST" id="imageForm" style="
+                    display: none;
+                    height: auto;
+                    border-top: 8px #000 solid;">
+
+                {% csrf_token %}
+
+                <div style="display:none;">
+                    {{ form.imageData }}
+                </div>
+
+                <div class="g-recaptcha"
+                     data-sitekey="6LcQwicTAAAAAE-qh8zc2loTRQEsE2xNiBwhEd5a">
+                </div>
+
+                <input type="submit" value="View Full Image" style="margin: 1rem 0 2rem 0;">
+
+            </form>
+
+            <img id="genImage" src="{% static 'img/preview.png' %}" alt="generated image">
         </div>
     </div>
     
-    <p>All orders are handled by <a href="https://www.fotomoto.com">fotomoto</a>.</p>
-    
-    <div class="imageWrapper" id="examples">
-        <div><img src="{% static 'img/testimageplsignore.png' %}" alt=""></div>
-    </div>
-
-    <p>All orders are handled by <a href="https://www.fotomoto.com">fotomoto</a>.</p>
+    <p>
+        Refine your image in our easy to use binary art generator, which
+        outputs high detail images for the best print quality.
+        Buy art prints, posters, canvas prints, or metal prints of your
+        generated images.
+    </p>
     
     <div class="imageWrapper">
-        <div><img src="{% static 'img/testimageplsignore.png' %}" alt=""></div>
+        <div><img src="{% static 'img/mockup1.png' %}" alt="mockup"
+            title="A hello world program written in python"
+        ></div>
     </div>
-    
-    <p>View this project on github.</p>
+
+    <p>
+        All images you create with the generator can be used
+        <a href="/terms/">however you like</a>,
+        and you can use their unique urls to share them with others.
+    </p>
     
     <div class="imageWrapper">
-        <div><img src="{% static 'img/testimageplsignore.png' %}" alt=""></div>
+        <div><img src="{% static 'img/mockup2.png' %}" alt="mockup"
+            title="A picture of some trees"
+        ></div>
     </div>
+
+    <p>
+        Large images will have higher quality for large prints, but they
+        take longer to generate and background images might be too small.
+        If an image is too large to upload, you will be shown a direct
+        download button.
+    </p>
     
-    <p style="margin:0;">A</p>
+    <div class="imageWrapper">
+        <div><img src="{% static 'img/mockup3.png' %}" alt="mockup"
+            title="Castle pixel art"
+        ></div>
+    </div>
+
+    <p>
+        View this project on <a href="#">github</a>.
+    </p>
+
+    <div class="imageWrapper" style="margin-bottom:0;">
+        <div><img src="{% static 'img/collage2.png' %}" alt="collage"
+            id="collage2"
+        ></div>
+    </div>
+
 {% endblock %}
 
 {% block javascript %}
     <script src="{% static 'js/load-image.all.min.js' %}"></script>
     <script src="{% static 'js/render.js' %}"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <script>
+        // when the collages are hovered over, an image with
+        //    details on the images in the collage will appear
+        // this cannot be done in css because of how django
+        //    templates load static images
+
+        document.getElementById( "collage1" ).addEventListener( "mouseenter", function(){
+            document.getElementById( "collage1" )
+                .src = "{% static 'img/collage1_overlay.png' %}";
+        });
+        document.getElementById( "collage1" ).addEventListener( "mouseleave", function(){
+            document.getElementById( "collage1" )
+                .src = "{% static 'img/collage1.png' %}";
+        });
+
+        document.getElementById( "collage2" ).addEventListener( "mouseenter", function(){
+            document.getElementById( "collage2" )
+                .src = "{% static 'img/collage2_overlay.png' %}";
+        });
+        document.getElementById( "collage2" ).addEventListener( "mouseleave", function(){
+            document.getElementById( "collage2" )
+                .src = "{% static 'img/collage2.png' %}";
+        });
+    </script>
 {% endblock %}

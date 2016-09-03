@@ -28,7 +28,7 @@ var renderImage = {
         charPad: 10,
         bytePad: 30,
         bytePadVertical: 30,
-        canvasPad: 50,
+        canvasPad: 100,
         outlineSize: 0,
         outlineColor: 'black',
         backgroundColor: 'black',
@@ -42,7 +42,6 @@ var renderImage = {
     
     // Setup, draw, and display the image to the users
     render: function ( data, settings ) {
-        this.settings.font = settings.font || this.settings.font;
         this.settings.charHeight = settings.charHeight || this.settings.charHeight;
         this.settings.backgroundColor = settings.backgroundColor || this.settings.backgroundColor;
         this.settings.textColor = settings.textColor || this.settings.textColor;
@@ -51,6 +50,7 @@ var renderImage = {
         this.settings.imageSize = settings.imageSize || this.settings.imageSize;
         this.settings.imageOpacity = settings.imageOpacity || this.settings.imageOpacity;
         this.settings.imagePosition = settings.imagePosition || this.settings.imagePosition;
+        this.settings.canvasPad = settings.canvasPad || this.settings.canvasPad;
         
         this.setup();
         this.findProperSizes();
@@ -97,8 +97,8 @@ var renderImage = {
     // Change character height and vertical padding so text fits correctly
     findProperSizes: function () {
         var charHeight = this.settings.charHeight;
-        var width = this.canvas.width - ( charHeight * 4 );
-        var byteWidth = Math.round( ( charHeight * 5.36 ) + ( charHeight * 1.4 ) );
+        var width = ( this.canvas.width - ( this.settings.canvasPad * 2 ) );
+        var byteWidth = Math.round( charHeight * 6.76 );
         var bytePad = Math.round( charHeight * 0.8 );
         var numBytes = 0;
         var numBytesVertical = 0;
@@ -111,11 +111,11 @@ var renderImage = {
             }
         }
 
-        this.settings.charHeight = ( this.canvas.width / ( ( 7.56 * numBytes ) + 3.2 ) );
+        this.settings.charHeight = ( width / ( ( 6.76 * numBytes ) +
+            ( 0.8 * ( numBytes - 1 ) ) ) );
         this.settings.charWidth = ( this.settings.charHeight * 0.67 );
         this.settings.charPad = ( this.settings.charHeight * 0.2 );
         this.settings.bytePad = ( this.settings.charPad * 4 );
-        this.settings.canvasPad = ( this.settings.charHeight * 2 );
 
         var height = ( this.canvas.height - ( this.settings.canvasPad * 2 ) );
         for ( var count = height; count > 0; ) {
@@ -310,22 +310,6 @@ var renderImage = {
         this.ctx.fill();
     },
     
-//    makeSimpleZero: function ( x, y ) {
-//        var height = this.settings.charHeight;
-//        this.ctx.moveTo(x + (height * 0.5), y);
-//
-//        this.ctx.save();
-//        this.ctx.scale(0.67, 1);
-//        this.ctx.beginPath();
-//        this.ctx.arc( x, y, height * 0.5, 0, 2 * Math.PI, false);
-//        this.ctx.arc( x, y, height * 0.25, 0, 2 * Math.PI, true);
-//        this.ctx.stroke();
-//        this.ctx.closePath();
-//        this.ctx.restore();
-//
-//        this.ctx.fill();
-//    }
-    
     drawImage: function ( image ) {
         var scale = this.canvas.height * ( this.settings.imageSize/100 );
         var scaledImage = loadImage.scale(
@@ -348,7 +332,31 @@ var showImage = function ( image ) {
     var genImageView = document.getElementById( 'genImageWrapper' );
     var imageView = document.getElementById( 'genImage' );
     var imageData = document.getElementById( 'id_imageData' );
-    imageView.src = image;
+
+    loadImage(
+        image,
+        function( imageSmall ) {
+            imageView.src = imageSmall.toDataURL( 'image/png' );
+        },
+        {
+            canvas: true,
+            maxWidth: 2000,
+            pixelRatio: window.devicePixelRatio,
+        }
+    );
+
+    var head = 'data:image/png;base64,';
+    var imgFileSize = Math.round( ( image.length - head.length ) * 3/4 );
+
+    if ( imgFileSize > 60000000 ) {
+        document.getElementById( 'viewImage' ).style.display = 'none';
+        document.getElementById( 'downloadImage' ).style.display = 'block';
+        document.getElementById( 'downloadImage' ).href = image;
+    } else {
+        document.getElementById( 'viewImage' ).style.display = 'block';
+        document.getElementById( 'downloadImage' ).style.display = 'none';
+    }
+
     imageData.value = image;
     genImageView.style.display = 'table';
 }
@@ -357,6 +365,9 @@ var showImage = function ( image ) {
 var showSettings = function () {
     document.getElementById( 'charHeight' ).value = '36';
     document.getElementById( 'fontSizeDisplay' ).innerHTML = '36';
+
+    document.getElementById( 'canvasPad' ).value = '72';
+    document.getElementById( 'canvasPadDisplay' ).innerHTML = '72';
     
     document.getElementById( 'textColor' ).value = '#FFFFFF';
     document.getElementById( 'textColorView' )
@@ -367,8 +378,9 @@ var showSettings = function () {
         .style.backgroundColor = '#000000';
     
     document.getElementById( 'canvasSize' ).value = '1:1S';
-    document.getElementById( 'font' ).value = 'source';
-    
+    document.getElementById( 'canvasOrientation' ).value = 'landscape';
+    // document.getElementById( 'font' ).value = 'source';
+
     // hide image options and show image button because image is reset
     document.getElementById( 'imageFileWrapper' ).style.display = 'block';
     document.getElementById( 'imageSettings' ).style.display = 'none';
@@ -418,15 +430,19 @@ var getSettings = function () {
     var settings = {};
     
     if ( document.getElementById( 'font' ) ) {
-        settings.font = document.getElementById( 'font' ).value
+        settings.font = document.getElementById( 'font' ).value;
     }
     
     if ( document.getElementById( 'charHeight' ) ) {
-        settings.charHeight = document.getElementById( 'charHeight' ).value
+        settings.charHeight = document.getElementById( 'charHeight' ).value;
+    }
+
+    if ( document.getElementById( 'canvasPad' ) ) {
+        settings.canvasPad = parseInt( document.getElementById( 'canvasPad' ).value );
     }
     
     if ( document.getElementById( 'textColor' ) ) {
-        settings.textColor = document.getElementById( 'textColor' ).value
+        settings.textColor = document.getElementById( 'textColor' ).value;
         
         if ( settings.textColor.charAt(0) !== '#' ) {
             settings.textColor = '#' + settings.textColor;
@@ -441,7 +457,7 @@ var getSettings = function () {
     
     if ( document.getElementById( 'backgroundColor' ) ) {
         settings.backgroundColor = document
-            .getElementById( 'backgroundColor' ).value
+            .getElementById( 'backgroundColor' ).value;
         
         if ( settings.backgroundColor.charAt(0) !== '#' ) {
             settings.backgroundColor = '#' + settings.backgroundColor;
@@ -458,51 +474,60 @@ var getSettings = function () {
     if ( document.getElementById( 'canvasSize' ) ) {
         switch ( document.getElementById( 'canvasSize' ).value ) {
             case '1:1S':
-                settings.canvasHeight = 3600;
-                settings.canvasWidth = 3600;
+                settings.canvasHeight = 2400;
+                settings.canvasWidth = 2400;
                 break;
             case '1:1L':
-                settings.canvasHeight = 7200;
-                settings.canvasWidth = 7200;
+                settings.canvasHeight = 4800;
+                settings.canvasWidth = 4800;
                 break;
             case '5:4S':
-                settings.canvasHeight = 3600;
-                settings.canvasWidth = 4500;
+                settings.canvasHeight = 2400;
+                settings.canvasWidth = 3000;
                 break;
             case '5:4L':
-                settings.canvasHeight = 6000;
-                settings.canvasWidth = 7500;
+                settings.canvasHeight = 4800;
+                settings.canvasWidth = 6000;
                 break; 
             case '3:2S':
-                settings.canvasHeight = 3000;
-                settings.canvasWidth = 4500;
+                settings.canvasHeight = 2400;
+                settings.canvasWidth = 3600;
                 break;
             case '3:2L':
-                settings.canvasHeight = 7200;
-                settings.canvasWidth = 10800;
+                settings.canvasHeight = 4000;
+                settings.canvasWidth = 6000;
                 break;
             case '2:1S':
+                settings.canvasHeight = 1500;
+                settings.canvasWidth = 3000;
+                break;
+            case '2:1L':
                 settings.canvasHeight = 3000;
                 settings.canvasWidth = 6000;
                 break;
-            case '2:1L':
-                settings.canvasHeight = 7200;
-                settings.canvasWidth = 14400;
-                break;
+        }
+
+        if ( document.getElementById( 'canvasOrientation' ) ) {
+            if ( document.getElementById( 'canvasOrientation' )
+                    .value === 'portrait' ) {
+                var tempHeight = settings.canvasHeight;
+                settings.canvasHeight = settings.canvasWidth;
+                settings.canvasWidth = tempHeight;
+            }
         }
     }
-    
+
     // Image settings, only used if the image exists
     if ( document.getElementById( 'imageSize' ) ) {
-        settings.imageSize = document.getElementById( 'imageSize' ).value
+        settings.imageSize = document.getElementById( 'imageSize' ).value;
     }
     
     if ( document.getElementById( 'imageOpacity' ) ) {
-        settings.imageOpacity = document.getElementById( 'imageOpacity' ).value
+        settings.imageOpacity = document.getElementById( 'imageOpacity' ).value;
     }
     
     if ( document.getElementById( 'imagePosition' ) ) {
-        settings.imagePosition = document.getElementById( 'imagePosition' ).value
+        settings.imagePosition = document.getElementById( 'imagePosition' ).value;
     }
     
     return settings;
@@ -568,16 +593,16 @@ var readFile = function ( event ) {
     }
 };
 
-var readUrl = function () {
-    resetRender();
+// var readUrl = function () {
+//     resetRender();
     
-    // Store data as global value to use when
-    // re-rendering after users change settings
-    gBits = bits;
+//     // Store data as global value to use when
+//     // re-rendering after users change settings
+//     gBits = bits;
 
-    showSettings();
-    showImage( renderImage.render( bits, getSettings() ) );
-};
+//     showSettings();
+//     showImage( renderImage.render( bits, getSettings() ) );
+// };
 
 var readAscii = function () {
     resetRender();
@@ -684,7 +709,10 @@ var readImage = function ( event ) {
 var resetRender = function () {
     gBits = null;
     gImage = null;
-    
+
+    // hide recaptcha
+    document.getElementById( 'imageForm' ).style.display = 'none';
+
     // Replace the image file upload button with a copy, this is to stop the
     // change event listener from ignoring a file being uploaded twice in a row
     var imageNode = document.getElementById( 'imageFileInput' ).cloneNode(true);
@@ -701,12 +729,12 @@ var showFile = function ( tagName ) {
     showSelected( 'uploadFile' );
 };
 
-var showUrl = function ( tagName ) {
-    hideSettings();
-    hideInputs();
-    document.getElementById( 'urlInput' ).parentNode.style.display = 'block';
-    showSelected( 'uploadUrl' );
-};
+// var showUrl = function ( tagName ) {
+//     hideSettings();
+//     hideInputs();
+//     document.getElementById( 'urlInput' ).parentNode.style.display = 'block';
+//     showSelected( 'uploadUrl' );
+// };
 
 var showAscii = function ( tagName ) {
     hideSettings();
@@ -745,6 +773,12 @@ charHeightRange.addEventListener( 'input', function () {
         .innerHTML = charHeightRange.value;
 }, false );
 
+var canvasPadRange = document.getElementById( 'canvasPad' );
+canvasPadRange.addEventListener( 'input', function () {
+    document.getElementById( 'canvasPadDisplay' )
+        .innerHTML = canvasPadRange.value;
+}, false );
+
 var textColorText = document.getElementById( 'textColor' );
 textColorText.addEventListener( 'input', function () {
     document.getElementById( 'textColorView' )
@@ -769,6 +803,17 @@ imageOpacityRange.addEventListener( 'input', function () {
         .innerHTML = imageOpacityRange.value;
 }, false );
 
+// toggle the recaptcha when the view full image button is clicked
+function toggleCaptcha () {
+    if ( document.getElementById( 'imageForm' ).style.display === 'none' ) {
+        document.getElementById( 'imageForm' ).style.display = 'block';
+    } else {
+        document.getElementById( 'imageForm' ).style.display = 'none';
+    }
+
+    return false;
+}
+
 // Buttons for updating settings and uploading image files
 document.getElementById( 'updateSettings' )
     .addEventListener( 'click', settingsUpdate );
@@ -778,8 +823,8 @@ document.getElementById( 'imageFileInput' )
 // Buttons for submitting data
 document.getElementById( 'fileInput' )
     .addEventListener( 'change', readFile );
-document.getElementById( 'urlInput' )
-    .addEventListener( 'click', readUrl );
+// document.getElementById( 'urlInput' )
+//     .addEventListener( 'click', readUrl );
 document.getElementById( 'asciiInput' )
     .addEventListener( 'click', readAscii );
 document.getElementById( 'binaryInput' )
