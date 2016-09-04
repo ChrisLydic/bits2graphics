@@ -19,13 +19,13 @@ def home( request ):
     
     if form.is_valid():
         userCaptchaData = request.POST.get('g-recaptcha-response')
-        secretKey = 'xxx'
+        secretKey = '?'
         captchaParams = { 'secret': secretKey, 'response': userCaptchaData }
 
         resp = requests.get( 'https://www.google.com/recaptcha/api/siteverify',
             params=captchaParams )
 
-        if resp.json()['success'] != 'true':
+        if resp.json()['success'] != True:
             return render(request, 'imageBuilder/index.html', {'form': form})
 
         imageData = request.POST.get( 'imageData' )

@@ -1,6 +1,10 @@
 {% extends 'imageBuilder/base.html' %}
 {% load staticfiles %}
 
+{% block head %}
+<script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}
+
 {% block content %}
     <div class="imageWrapper">
         <div><img src="{% static 'img/collage1.png' %}" alt="collage"
@@ -35,12 +39,12 @@
             
             <div style="display:none;">
                 <input type="text" id="asciiData" placeholder="Hello world"><button
-                        type="button" id="asciiInput">Upload</button>
+                        type="button" id="asciiInput">Submit</button>
             </div>
             
             <div style="display:none;">
                 <input type="text" id="binaryData" placeholder="00000010"><button
-                        type="button" id="binaryInput">Upload</button>
+                        type="button" id="binaryInput">Submit</button>
             </div>
             
             <div id="settingsWrapper">
@@ -256,7 +260,6 @@ take longer to generate and background images might not fill them.
 {% block javascript %}
     <script src="{% static 'js/load-image.all.min.js' %}"></script>
     <script src="{% static 'js/render.js' %}"></script>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
 
     <script>
         // when the collages are hovered over, an image with
